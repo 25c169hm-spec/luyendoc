@@ -29,12 +29,14 @@
             align-items: center;
             padding: 10px;
             color: #333;
+            overflow-y: auto; /* Cho phép scroll trên mobile */
+            -webkit-overflow-scrolling: touch; /* Smooth scroll trên iOS */
         }
         
         .container {
             width: 100%;
             max-width: 900px;
-            height: 100%;
+            min-height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -49,14 +51,14 @@
         
         h1 {
             color: #FF6B6B;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             text-shadow: 2px 2px 0 #FFD166;
             margin-bottom: 5px;
             line-height: 1.2;
         }
         
         .subtitle {
-            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
             color: #555;
         }
         
@@ -66,7 +68,7 @@
             width: 100%;
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 12px;
-            padding: 10px;
+            padding: 8px;
             margin-bottom: 10px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
@@ -78,13 +80,13 @@
         }
         
         .info-label {
-            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
             color: #555;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
         
         .info-value {
-            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
             font-weight: bold;
             color: #06D6A0;
         }
@@ -100,12 +102,13 @@
             flex: 1;
             gap: 10px;
             margin-bottom: 10px;
+            min-height: 400px;
         }
         
         .reading-panel {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
@@ -114,18 +117,18 @@
         .word-display {
             background-color: #FFD166;
             border-radius: 10px;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             margin-bottom: 10px;
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
-            min-height: 80px;
+            min-height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
         .current-word {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
             color: #EF476F;
             font-weight: bold;
             text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
@@ -135,13 +138,13 @@
         .sentence-display {
             background-color: #A2D2FF;
             border-radius: 10px;
-            padding: 10px;
+            padding: 8px;
             text-align: center;
             margin-bottom: 10px;
-            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
             color: #1D3557;
             line-height: 1.3;
-            min-height: 60px;
+            min-height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -156,14 +159,16 @@
         .mode-btn {
             flex: 1;
             padding: 8px;
-            font-size: clamp(0.9rem, 1.8vw, 1rem);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
             border-radius: 25px;
+            border: 2px solid transparent;
+            background-color: #f0f0f0;
         }
         
         .mode-btn.active {
             background-color: #118AB2;
             color: white;
-            transform: scale(1.02);
+            border-color: #118AB2;
         }
         
         .listening-indicator {
@@ -187,7 +192,7 @@
             padding: 8px;
             background-color: rgba(162, 210, 255, 0.3);
             border-radius: 8px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             font-weight: bold;
             color: #118AB2;
         }
@@ -195,10 +200,10 @@
         .control-instructions {
             background-color: rgba(6, 214, 160, 0.2);
             border-radius: 8px;
-            padding: 10px;
+            padding: 8px;
             margin: 8px 0;
             text-align: center;
-            font-size: clamp(0.9rem, 1.8vw, 1rem);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
         }
         
         .shoot-instruction {
@@ -207,7 +212,7 @@
             padding: 8px;
             background-color: rgba(255, 215, 102, 0.3);
             border-radius: 8px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             font-weight: bold;
             color: #118AB2;
         }
@@ -220,7 +225,6 @@
             overflow: hidden;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             position: relative;
-            touch-action: none;
         }
         
         canvas {
@@ -234,15 +238,16 @@
         .controls {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
+            width: 100%;
         }
         
         button {
             border: none;
             border-radius: 25px;
             padding: 12px;
-            font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
@@ -278,7 +283,7 @@
         .mobile-controls {
             display: none;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
             width: 100%;
         }
@@ -292,6 +297,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            touch-action: manipulation;
         }
         
         .mobile-btn:active {
@@ -299,8 +305,8 @@
         }
         
         .feedback {
-            margin-top: 10px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-top: 8px;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             font-weight: bold;
             min-height: 25px;
             text-align: center;
@@ -339,11 +345,11 @@
         .message h2 {
             color: #EF476F;
             margin-bottom: 10px;
-            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
         }
         
         .message p {
-            font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
             margin-bottom: 15px;
             color: #333;
             line-height: 1.4;
@@ -353,14 +359,14 @@
             background-color: #118AB2;
             color: white;
             padding: 10px 20px;
-            font-size: clamp(1rem, 2vw, 1.1rem);
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         
         /* Input form styling */
         .input-form {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             margin-bottom: 15px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
@@ -370,11 +376,11 @@
             color: #118AB2;
             margin-bottom: 15px;
             text-align: center;
-            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
         }
         
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         
         .form-label {
@@ -382,7 +388,7 @@
             margin-bottom: 5px;
             font-weight: bold;
             color: #555;
-            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+            font-size: clamp(0.8rem, 1.8vw, 1rem);
         }
         
         .form-input {
@@ -390,7 +396,8 @@
             padding: 10px;
             border: 2px solid #A2D2FF;
             border-radius: 8px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            touch-action: manipulation;
         }
         
         .form-textarea {
@@ -398,21 +405,22 @@
             padding: 10px;
             border: 2px solid #A2D2FF;
             border-radius: 8px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
             min-height: 150px;
             resize: vertical;
+            touch-action: manipulation;
         }
         
         .form-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 15px;
         }
         
         .form-btn {
             flex: 1;
             padding: 12px;
-            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
         
         .start-btn {
@@ -427,15 +435,39 @@
         
         .form-instruction {
             margin-top: 10px;
-            font-size: clamp(0.8rem, 1.6vw, 1rem);
+            font-size: clamp(0.7rem, 1.6vw, 0.9rem);
             color: #555;
             text-align: center;
         }
         
+        /* Speech debug info */
+        .speech-debug {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            padding: 8px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
         /* Hiển thị mobile controls trên màn hình nhỏ */
         @media (max-width: 768px) {
+            body {
+                padding: 5px;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+            
+            .container {
+                min-height: 100vh;
+                height: auto;
+            }
+            
             .game-area {
                 flex-direction: column;
+                min-height: auto;
             }
             
             .reading-panel {
@@ -444,7 +476,8 @@
             
             .game-canvas-container {
                 order: 2;
-                min-height: 40vh;
+                min-height: 50vh;
+                max-height: 50vh;
             }
             
             .controls {
@@ -453,18 +486,24 @@
             
             .mobile-controls {
                 display: grid;
+                order: 4;
             }
             
             .control-instructions {
                 display: none;
             }
             
-            body {
-                padding: 5px;
-            }
-            
             .game-info {
                 padding: 8px;
+            }
+            
+            .input-form {
+                margin-top: 10px;
+            }
+            
+            /* Cho phép scroll trên mobile */
+            .form-textarea {
+                overflow-y: auto;
             }
         }
         
@@ -500,17 +539,21 @@
             }
             
             .word-display {
-                min-height: 70px;
+                min-height: 60px;
                 padding: 10px;
             }
             
             .current-word {
-                font-size: clamp(1.5rem, 3vw, 2rem);
+                font-size: clamp(1.4rem, 3vw, 1.8rem);
             }
             
             button {
                 padding: 10px;
                 min-height: 45px;
+            }
+            
+            .form-buttons {
+                flex-direction: column;
             }
         }
         
@@ -542,13 +585,44 @@
             canvas {
                 -webkit-overflow-scrolling: touch;
             }
+            
+            body {
+                height: -webkit-fill-available;
+            }
+            
+            .container {
+                min-height: -webkit-fill-available;
+            }
         }
         
         /* Ngăn chặn zoom trên mobile */
         @media (hover: none) and (pointer: coarse) {
             body {
-                touch-action: pan-x pan-y;
+                touch-action: pan-y;
             }
+            
+            .form-textarea, .form-input {
+                touch-action: manipulation;
+            }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
@@ -574,6 +648,7 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
                 <button class="form-btn example-btn" id="load-example-btn">📋 Dùng ví dụ mẫu</button>
                 <button class="form-btn start-btn" id="start-game-btn">🚀 Bắt đầu chơi</button>
             </div>
+            <div class="speech-debug" id="speech-debug"></div>
             <p class="form-instruction">💡 <strong>Hướng dẫn:</strong> Mỗi dòng là một từ. Định dạng: "từ - câu ví dụ" hoặc chỉ cần "từ".</p>
         </div>
         
@@ -684,6 +759,7 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
         
         // Speech Recognition API
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
         let recognition = null;
         
         // Kiểm tra trình duyệt hỗ trợ nhận diện giọng nói không
@@ -718,6 +794,7 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
         const manualModeBtn = document.getElementById('manual-mode-btn');
         const manualControl = document.getElementById('manual-control');
         const manualCorrectBtn = document.getElementById('manual-correct-btn');
+        const speechDebugEl = document.getElementById('speech-debug');
         
         // Mobile controls
         const mobileLeftBtn = document.getElementById('mobile-left');
@@ -732,6 +809,15 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
         let mouseX = 0;
         let mouseY = 0;
         let isTouching = false;
+        
+        // Cập nhật debug thông tin
+        function updateDebugInfo(text) {
+            if (speechDebugEl) {
+                speechDebugEl.innerHTML = text;
+                speechDebugEl.style.display = 'block';
+            }
+            console.log(text);
+        }
         
         // Điều chỉnh kích thước canvas cho responsive
         function resizeCanvas() {
@@ -813,7 +899,7 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
             bullets = [];
             
             // Khởi tạo súng
-            const rect = canvas.getBoundingClientRect();
+            const rect = canvas.parentElement.getBoundingClientRect();
             cannon.x = rect.width / 2;
             cannon.y = rect.height - 40;
             cannon.angle = Math.PI/2;
@@ -843,10 +929,12 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
                 readBtn.disabled = false;
                 readBtn.textContent = "🎤 Bắt đầu đọc từ này";
                 feedbackEl.textContent = "Chế độ giọng nói đã sẵn sàng. Nhấn nút để bắt đầu đọc.";
+                updateDebugInfo("Trình duyệt hỗ trợ nhận diện giọng nói. Đang khởi tạo...");
             } else if (gameMode === 'manual') {
                 readBtn.disabled = false;
                 readBtn.textContent = "🎤 Bắt đầu đọc từ này";
                 feedbackEl.textContent = "Chế độ thủ công. Đọc to từ và nhấn nút 'Tôi đã đọc đúng' khi hoàn thành.";
+                updateDebugInfo("Chế độ thủ công đã được kích hoạt.");
             } else {
                 // Nếu không hỗ trợ giọng nói, tự động chuyển sang chế độ thủ công
                 gameMode = 'manual';
@@ -854,6 +942,7 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
                 readBtn.disabled = false;
                 readBtn.textContent = "🎤 Bắt đầu đọc từ này";
                 feedbackEl.textContent = "Trình duyệt không hỗ trợ nhận diện giọng nói. Đã chuyển sang chế độ thủ công.";
+                updateDebugInfo("Trình duyệt không hỗ trợ Speech Recognition. Đã chuyển sang chế độ thủ công.");
             }
             
             return true;
@@ -866,11 +955,13 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
                 manualModeBtn.classList.remove('active');
                 manualControl.style.display = 'none';
                 listeningIndicator.style.display = 'none';
+                readBtn.style.display = 'block';
             } else {
                 manualModeBtn.classList.add('active');
                 voiceModeBtn.classList.remove('active');
                 manualControl.style.display = 'block';
                 listeningIndicator.style.display = 'none';
+                readBtn.style.display = 'block';
             }
         }
         
@@ -893,7 +984,7 @@ sách - cuốn sách, tủ sách, đọc sách"></textarea>
             const radius = minRadius + Math.random() * (maxRadius - minRadius);
             
             // Lấy kích thước canvas
-            const rect = canvas.getBoundingClientRect();
+            const rect = canvas.parentElement.getBoundingClientRect();
             const canvasWidth = rect.width;
             const canvasHeight = rect.height;
             
@@ -990,23 +1081,30 @@ lành - hiền lành
 bánh - bánh chưng, bánh kẹo`;
             
             wordsInputEl.value = exampleWords;
+            wordsInputEl.focus();
         }
         
-        // Khởi tạo nhận diện giọng nói
+        // Khởi tạo nhận diện giọng nói - ĐÃ SỬA LỖI
         function initSpeechRecognition() {
-            if (!isSpeechSupported) return;
+            if (!isSpeechSupported) {
+                updateDebugInfo("Trình duyệt không hỗ trợ Speech Recognition API");
+                return;
+            }
             
             try {
                 recognition = new SpeechRecognition();
                 recognition.lang = 'vi-VN'; // Tiếng Việt
                 recognition.continuous = false; // Chỉ nhận diện một lần
                 recognition.interimResults = false; // Không hiển thị kết quả tạm thời
-                recognition.maxAlternatives = 1; // Chỉ lấy 1 kết quả tốt nhất
+                recognition.maxAlternatives = 5; // Tăng số phương án để cải thiện độ chính xác
                 
-                // Thêm config cho iOS
-                if (isIOS) {
-                    recognition.continuous = true;
-                    recognition.interimResults = true;
+                // Tạo danh sách từ để cải thiện nhận diện
+                if (SpeechGrammarList && wordList.length > 0) {
+                    const speechRecognitionList = new SpeechGrammarList();
+                    const words = wordList.map(item => item.word).join(' | ');
+                    const grammar = '#JSGF V1.0; grammar words; public <word> = ' + words + ' ;';
+                    speechRecognitionList.addFromString(grammar, 1);
+                    recognition.grammars = speechRecognitionList;
                 }
                 
                 recognition.onstart = function() {
@@ -1016,51 +1114,77 @@ bánh - bánh chưng, bánh kẹo`;
                     listeningIndicator.style.display = 'block';
                     feedbackEl.textContent = "Đang nghe... Hãy đọc to và rõ ràng!";
                     feedbackEl.className = "feedback";
+                    updateDebugInfo("Đang nghe... Hãy nói từ '" + wordList[currentWordIndex].word + "'");
                 };
                 
                 recognition.onresult = function(event) {
-                    let transcript = '';
+                    let finalTranscript = '';
+                    let interimTranscript = '';
+                    
                     for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
                         if (event.results[i].isFinal) {
-                            transcript += event.results[i][0].transcript;
+                            finalTranscript += transcript;
+                        } else {
+                            interimTranscript += transcript;
                         }
                     }
                     
-                    transcript = transcript.toLowerCase().trim();
+                    finalTranscript = finalTranscript.toLowerCase().trim();
                     const currentWord = wordList[currentWordIndex].word.toLowerCase();
                     
-                    if (!transcript) return;
+                    updateDebugInfo("Nhận diện: '" + finalTranscript + "' (Từ cần: '" + currentWord + "')");
                     
-                    console.log("Nhận diện được: " + transcript);
+                    if (!finalTranscript) {
+                        // Nếu không có kết quả cuối cùng, thử với interim
+                        if (interimTranscript) {
+                            finalTranscript = interimTranscript.toLowerCase().trim();
+                        } else {
+                            return;
+                        }
+                    }
+                    
+                    console.log("Nhận diện được: " + finalTranscript);
                     console.log("Từ cần đọc: " + currentWord);
                     
                     // Kiểm tra xem có đọc đúng không
                     let isCorrect = false;
                     
                     // So sánh trực tiếp
-                    if (transcript === currentWord) {
+                    if (finalTranscript === currentWord) {
                         isCorrect = true;
                     }
                     // Kiểm tra xem từ cần đọc có trong câu nói không (cho phép nói thêm từ)
-                    else if (transcript.includes(currentWord)) {
+                    else if (finalTranscript.includes(currentWord)) {
                         isCorrect = true;
                     }
                     // Kiểm tra độ tương đồng (cho phép sai lệch nhỏ)
-                    else if (calculateSimilarity(transcript, currentWord) > 0.7) {
+                    else if (calculateSimilarity(finalTranscript, currentWord) > 0.6) {
                         isCorrect = true;
+                    }
+                    // Kiểm tra với các phương án thay thế
+                    else if (event.results[0] && event.results[0].length > 1) {
+                        for (let i = 1; i < event.results[0].length; i++) {
+                            const altTranscript = event.results[0][i].transcript.toLowerCase().trim();
+                            if (altTranscript === currentWord || altTranscript.includes(currentWord) || 
+                                calculateSimilarity(altTranscript, currentWord) > 0.6) {
+                                isCorrect = true;
+                                break;
+                            }
+                        }
                     }
                     
                     if (isCorrect) {
-                        // Dừng nhận diện trên iOS
-                        if (isIOS) {
-                            recognition.stop();
-                        }
-                        handleReadingResult(isCorrect, transcript);
+                        handleReadingResult(isCorrect, finalTranscript);
+                    } else {
+                        handleReadingResult(false, finalTranscript);
                     }
                 };
                 
                 recognition.onerror = function(event) {
                     console.error('Lỗi nhận diện giọng nói:', event.error);
+                    updateDebugInfo("Lỗi: " + event.error);
+                    
                     isListening = false;
                     readBtn.classList.remove('listening');
                     readBtn.textContent = "🎤 Bắt đầu đọc từ này";
@@ -1070,14 +1194,31 @@ bánh - bánh chưng, bánh kẹo`;
                         feedbackEl.textContent = "Microphone bị từ chối. Vui lòng cho phép sử dụng microphone hoặc chuyển sang chế độ thủ công.";
                         feedbackEl.className = "feedback incorrect";
                         
+                        // Hiển thị hướng dẫn cấp quyền
+                        if (isIOS || isAndroid) {
+                            updateDebugInfo("Trên điện thoại, cần cấp quyền microphone. Hãy kiểm tra cài đặt trình duyệt.");
+                        }
+                        
                         // Tự động chuyển sang chế độ thủ công sau 3 giây
                         setTimeout(() => {
                             gameMode = 'manual';
                             updateModeDisplay();
                             feedbackEl.textContent = "Đã chuyển sang chế độ thủ công. Đọc to từ và nhấn nút 'Tôi đã đọc đúng'.";
+                            updateDebugInfo("Đã tự động chuyển sang chế độ thủ công.");
                         }, 3000);
+                    } else if (event.error === 'no-speech') {
+                        feedbackEl.textContent = "Không nghe thấy giọng nói. Hãy đọc to hơn và thử lại.";
+                        feedbackEl.className = "feedback incorrect";
+                        setTimeout(() => {
+                            if (gameMode === 'voice' && !isListening) {
+                                startListening();
+                            }
+                        }, 2000);
+                    } else if (event.error === 'audio-capture') {
+                        feedbackEl.textContent = "Không thể truy cập microphone. Vui lòng kiểm tra thiết bị âm thanh.";
+                        feedbackEl.className = "feedback incorrect";
                     } else {
-                        feedbackEl.textContent = "Lỗi nhận diện giọng nói. Vui lòng thử lại hoặc chuyển sang chế độ thủ công.";
+                        feedbackEl.textContent = "Lỗi nhận diện giọng nói: " + event.error + ". Vui lòng thử lại hoặc chuyển sang chế độ thủ công.";
                         feedbackEl.className = "feedback incorrect";
                     }
                 };
@@ -1087,11 +1228,21 @@ bánh - bánh chưng, bánh kẹo`;
                     readBtn.classList.remove('listening');
                     readBtn.textContent = "🎤 Bắt đầu đọc từ này";
                     listeningIndicator.style.display = 'none';
+                    
+                    // Tự động bắt đầu lại nếu chưa có kết quả và đang ở chế độ voice
+                    if (gameMode === 'voice' && gameActive && !canShoot && shots < maxShots) {
+                        setTimeout(() => {
+                            if (!isListening) {
+                                startListening();
+                            }
+                        }, 1000);
+                    }
                 };
                 
-                console.log("Speech Recognition đã được khởi tạo");
+                updateDebugInfo("Speech Recognition đã được khởi tạo thành công với ngôn ngữ: " + recognition.lang);
             } catch (error) {
                 console.error("Lỗi khi khởi tạo Speech Recognition:", error);
+                updateDebugInfo("Lỗi khởi tạo: " + error.message);
                 feedbackEl.textContent = "Không thể khởi tạo nhận diện giọng nói. Vui lòng chuyển sang chế độ thủ công.";
                 feedbackEl.className = "feedback incorrect";
                 gameMode = 'manual';
@@ -1117,6 +1268,8 @@ bánh - bánh chưng, bánh kẹo`;
                         feedbackEl.className = "feedback";
                     }
                 }, 3000);
+                
+                updateDebugInfo("Đọc đúng! Đã nhận diện: '" + transcript + "'");
             } else {
                 const errorMsg = transcript ? 
                     `Chưa đúng! Bạn nói: '${transcript}'. Cần đọc: '${wordList[currentWordIndex].word}'. Hãy thử lại!` :
@@ -1127,10 +1280,14 @@ bánh - bánh chưng, bánh kẹo`;
                 canShoot = false;
                 updateShootInstruction();
                 
+                updateDebugInfo("Chưa đúng. Đã nhận diện: '" + transcript + "', cần đọc: '" + wordList[currentWordIndex].word + "'");
+                
                 // Tự động bắt đầu lại sau 2 giây (chỉ khi ở chế độ voice)
                 if (gameMode === 'voice') {
                     setTimeout(() => {
-                        startListening();
+                        if (!isListening && gameActive) {
+                            startListening();
+                        }
                     }, 2000);
                 }
             }
@@ -1138,6 +1295,11 @@ bánh - bánh chưng, bánh kẹo`;
         
         // Tính độ tương đồng giữa hai chuỗi
         function calculateSimilarity(str1, str2) {
+            if (!str1 || !str2) return 0;
+            
+            str1 = str1.toLowerCase().replace(/\s+/g, '');
+            str2 = str2.toLowerCase().replace(/\s+/g, '');
+            
             let matches = 0;
             const minLength = Math.min(str1.length, str2.length);
             const maxLength = Math.max(str1.length, str2.length);
@@ -1148,7 +1310,7 @@ bánh - bánh chưng, bánh kẹo`;
                 }
             }
             
-            return matches / maxLength;
+            return maxLength > 0 ? matches / maxLength : 0;
         }
         
         // Cập nhật hướng dẫn bắn
@@ -1178,31 +1340,50 @@ bánh - bánh chưng, bánh kẹo`;
             }
         }
         
-        // Bắt đầu nghe (chế độ giọng nói)
+        // Bắt đầu nghe (chế độ giọng nói) - ĐÃ SỬA
         function startListening() {
-            if (gameMode !== 'voice' || !isSpeechSupported || isListening) return;
+            if (gameMode !== 'voice' || !isSpeechSupported || isListening || !gameActive) return;
             
             try {
+                // Dừng recognition trước nếu đang chạy
                 if (recognition) {
-                    recognition.start();
-                } else {
-                    // Nếu chưa có recognition, khởi tạo lại
-                    initSpeechRecognition();
-                    if (recognition) {
-                        recognition.start();
+                    try {
+                        recognition.stop();
+                    } catch (e) {
+                        // Bỏ qua lỗi nếu không thể dừng
                     }
                 }
-            } catch (error) {
-                console.error('Lỗi khi bắt đầu nhận diện:', error);
-                feedbackEl.textContent = "Không thể bắt đầu nhận diện giọng nói. Vui lòng thử lại hoặc chuyển sang chế độ thủ công.";
-                feedbackEl.className = "feedback incorrect";
                 
-                // Tự động chuyển sang chế độ thủ công sau 2 giây
+                // Khởi tạo lại recognition nếu cần
+                if (!recognition) {
+                    initSpeechRecognition();
+                }
+                
+                // Đợi một chút trước khi bắt đầu
                 setTimeout(() => {
-                    gameMode = 'manual';
-                    updateModeDisplay();
-                    feedbackEl.textContent = "Đã chuyển sang chế độ thủ công. Đọc to từ và nhấn nút 'Tôi đã đọc đúng'.";
-                }, 2000);
+                    try {
+                        if (recognition && !isListening) {
+                            recognition.start();
+                            updateDebugInfo("Đang bắt đầu nhận diện giọng nói...");
+                        }
+                    } catch (error) {
+                        console.error('Lỗi khi bắt đầu nhận diện:', error);
+                        updateDebugInfo("Lỗi khi start(): " + error.message);
+                        feedbackEl.textContent = "Không thể bắt đầu nhận diện giọng nói. Vui lòng thử lại hoặc chuyển sang chế độ thủ công.";
+                        feedbackEl.className = "feedback incorrect";
+                        
+                        // Tự động chuyển sang chế độ thủ công sau 2 giây
+                        setTimeout(() => {
+                            gameMode = 'manual';
+                            updateModeDisplay();
+                            feedbackEl.textContent = "Đã chuyển sang chế độ thủ công. Đọc to từ và nhấn nút 'Tôi đã đọc đúng'.";
+                            updateDebugInfo("Đã chuyển sang chế độ thủ công do lỗi nhận diện giọng nói.");
+                        }, 2000);
+                    }
+                }, 300);
+            } catch (error) {
+                console.error('Lỗi tổng quát khi bắt đầu nhận diện:', error);
+                updateDebugInfo("Lỗi tổng quát: " + error.message);
             }
         }
         
@@ -1242,6 +1423,8 @@ bánh - bánh chưng, bánh kẹo`;
         
         // Vẽ game
         function drawGame() {
+            if (!ctx || !canvas) return;
+            
             // Xóa canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
@@ -1268,7 +1451,7 @@ bánh - bánh chưng, bánh kẹo`;
         // Vẽ nền
         function drawBackground() {
             // Lấy kích thước canvas (đã scale)
-            const rect = canvas.getBoundingClientRect();
+            const rect = canvas.parentElement.getBoundingClientRect();
             const width = rect.width;
             const height = rect.height;
             
@@ -1324,7 +1507,7 @@ bánh - bánh chưng, bánh kẹo`;
         // Vẽ đại bác
         function drawCannon() {
             // Lấy kích thước canvas
-            const rect = canvas.getBoundingClientRect();
+            const rect = canvas.parentElement.getBoundingClientRect();
             const width = rect.width;
             const height = rect.height;
             
@@ -1454,7 +1637,7 @@ bánh - bánh chưng, bánh kẹo`;
         // Vẽ thông tin game trên canvas
         function drawGameInfo() {
             // Lấy kích thước canvas
-            const rect = canvas.getBoundingClientRect();
+            const rect = canvas.parentElement.getBoundingClientRect();
             const width = rect.width;
             
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
@@ -1559,7 +1742,7 @@ bánh - bánh chưng, bánh kẹo`;
             }
             
             // Giới hạn súng trong màn hình
-            const rect = canvas.getBoundingClientRect();
+            const rect = canvas.parentElement.getBoundingClientRect();
             cannon.x = Math.max(cannon.width/2 + 10, Math.min(rect.width - cannon.width/2 - 10, cannon.x));
             
             // Cập nhật vị trí bóng
@@ -1792,6 +1975,7 @@ bánh - bánh chưng, bánh kẹo`;
                     readBtn.classList.remove('listening');
                     readBtn.textContent = "🎤 Bắt đầu đọc từ này";
                     listeningIndicator.style.display = 'none';
+                    updateDebugInfo("Đã dừng nhận diện giọng nói");
                 } else {
                     // Bắt đầu nhận diện giọng nói
                     startListening();
@@ -1807,6 +1991,7 @@ bánh - bánh chưng, bánh kẹo`;
             if (gameMode === 'manual') {
                 // Xử lý như đã đọc đúng
                 handleReadingResult(true);
+                updateDebugInfo("Chế độ thủ công: Người dùng xác nhận đã đọc đúng");
             }
         });
         
@@ -1816,6 +2001,7 @@ bánh - bánh chưng, bánh kẹo`;
                 gameMode = 'voice';
                 updateModeDisplay();
                 resetFeedback();
+                updateDebugInfo("Đã chuyển sang chế độ giọng nói");
                 
                 // Nếu đang ở chế độ manual và đang đếm thời gian, dừng lại
                 if (isListening && recognition) {
@@ -1829,6 +2015,7 @@ bánh - bánh chưng, bánh kẹo`;
                 gameMode = 'manual';
                 updateModeDisplay();
                 resetFeedback();
+                updateDebugInfo("Đã chuyển sang chế độ thủ công");
                 
                 // Nếu đang ở chế độ voice và đang nghe, dừng lại
                 if (isListening && recognition) {
@@ -1843,12 +2030,14 @@ bánh - bánh chưng, bánh kẹo`;
             messageTitleEl.textContent = "Hoàn thành lượt chơi!";
             messageTextEl.textContent = `Bạn đã bắn ${shots} lần, hạ được ${10 - balls.length} quả bóng và đạt được ${score} điểm.`;
             messageEl.style.display = 'block';
+            updateDebugInfo("Đã hoàn thành lượt chơi với " + score + " điểm");
         }
         
         // Chơi lại với từ mới
         newGameBtn.addEventListener('click', function() {
             round++;
             showInputForm();
+            updateDebugInfo("Quay lại form nhập từ mới");
         });
         
         // Đóng thông báo
@@ -1888,6 +2077,11 @@ bánh - bánh chưng, bánh kẹo`;
             mobileControlsEl.style.display = 'none';
             controlsEl.style.display = 'none';
             gameActive = false;
+            
+            // Dừng nhận diện giọng nói nếu đang chạy
+            if (recognition && isListening) {
+                recognition.stop();
+            }
         }
         
         // Hiển thị game
@@ -1900,6 +2094,9 @@ bánh - bánh chưng, bánh kẹo`;
             if (isMobile) {
                 mobileControlsEl.style.display = 'grid';
             }
+            
+            // Cuộn lên đầu trang để xem game
+            window.scrollTo(0, 0);
         }
         
         // Bắt đầu game với từ đã nhập
@@ -1919,18 +2116,22 @@ bánh - bánh chưng, bánh kẹo`;
             }
             
             console.log("Đã nhập", wordList.length, "từ:", wordList);
+            updateDebugInfo("Đã nhập " + wordList.length + " từ. Đang khởi tạo game...");
             
             // Hiển thị game
             showGame();
             
             // Resize canvas và khởi tạo game
-            resizeCanvas();
-            if (initGame()) {
-                round = 1;
-                updateUI();
-            } else {
-                showInputForm();
-            }
+            setTimeout(() => {
+                resizeCanvas();
+                if (initGame()) {
+                    round = 1;
+                    updateUI();
+                    updateDebugInfo("Game đã khởi tạo thành công với " + wordList.length + " từ");
+                } else {
+                    showInputForm();
+                }
+            }, 100);
         }
         
         // Xử lý nút tải ví dụ mẫu
@@ -1945,6 +2146,14 @@ bánh - bánh chưng, bánh kẹo`;
             console.log("Thiết bị di động:", isMobile);
             console.log("iOS:", isIOS);
             console.log("Android:", isAndroid);
+            console.log("Speech Recognition hỗ trợ:", isSpeechSupported);
+            
+            // Kiểm tra và hiển thị thông tin nhận diện giọng nói
+            let speechInfo = "Trình duyệt: " + navigator.userAgent + "<br>";
+            speechInfo += "Speech Recognition hỗ trợ: " + (isSpeechSupported ? "Có" : "Không") + "<br>";
+            speechInfo += "Thiết bị di động: " + (isMobile ? "Có" : "Không") + "<br>";
+            speechInfo += "Hệ điều hành: " + (isIOS ? "iOS" : isAndroid ? "Android" : "Desktop");
+            updateDebugInfo(speechInfo);
             
             // Tải ví dụ mẫu khi trang tải xong
             loadExampleWords();
@@ -1952,13 +2161,27 @@ bánh - bánh chưng, bánh kẹo`;
             // Xử lý thay đổi kích thước cửa sổ
             window.addEventListener('resize', resizeCanvas);
             window.addEventListener('orientationchange', () => {
-                setTimeout(resizeCanvas, 100);
+                setTimeout(resizeCanvas, 300);
             });
+            
+            // Cho phép scroll trên mobile
+            if (isMobile) {
+                document.body.style.overflowY = 'auto';
+                document.body.style.touchAction = 'pan-y';
+            }
         });
         
-        // Ngăn chặn hành vi mặc định trên mobile
+        // Ngăn chặn hành vi mặc định trên mobile - CHỈ ÁP DỤNG CHO CANVAS
+        canvas.addEventListener('touchmove', (e) => {
+            if (e.target === canvas) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Cho phép scroll trên các phần tử khác
         document.addEventListener('touchmove', (e) => {
-            if (e.target === canvas || e.target === mobileLeftBtn || e.target === mobileRightBtn || e.target === mobileShootBtn) {
+            if (e.target === canvas || e.target === mobileLeftBtn || 
+                e.target === mobileRightBtn || e.target === mobileShootBtn) {
                 e.preventDefault();
             }
         }, { passive: false });
