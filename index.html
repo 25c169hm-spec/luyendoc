@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Game Bắn Bóng Luyện Đọc</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #87CEEB, #98FB98);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            color: #333;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 5px;
+        }
+        
+        h1 {
+            color: #FF6B6B;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            text-shadow: 2px 2px 0 #FFD166;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            color: #555;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-box {
+            text-align: center;
+            flex: 1;
+            padding: 5px;
+        }
+        
+        .info-label {
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            color: #555;
+            margin-bottom: 3px;
+        }
+        
+        .info-value {
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: bold;
+            color: #06D6A0;
+        }
+        
+        .shots-left {
+            color: #FF6B6B;
+        }
+        
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            flex: 1;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .reading-panel {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .word-display {
+            background-color: #FFD166;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .current-word {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: #EF476F;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+            word-break: break-word;
+        }
+        
+        .sentence-display {
+            background-color: #A2D2FF;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: #1D3557;
+            line-height: 1.3;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mode-selector {
+            display: flex;
+            gap: 8px;
+            margin: 8px 0;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 8px;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+            border-radius: 25px;
+        }
+        
+        .mode-btn.active {
+            background-color: #118AB2;
+            color: white;
+            transform: scale(1.02);
+        }
+        
+        .listening-indicator {
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+            color: #118AB2;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .manual-control {
+            display: none;
+            text-align: center;
+            margin: 8px 0;
+        }
+        
+        .ball-counter {
+            text-align: center;
+            margin: 8px 0;
+            padding: 8px;
+            background-color: rgba(162, 210, 255, 0.3);
+            border-radius: 8px;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: bold;
+            color: #118AB2;
+        }
+        
+        .control-instructions {
+            background-color: rgba(6, 214, 160, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            margin: 8px 0;
+            text-align: center;
+            font-size: clamp(0.9rem, 1.8vw, 1rem);
+        }
+        
+        .shoot-instruction {
+            text-align: center;
+            margin: 8px 0;
+            padding: 8px;
+            background-color: rgba(255, 215, 102, 0.3);
+            border-radius: 8px;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: bold;
+            color: #118AB2;
+        }
+        
+        .game-canvas-container {
+            flex: 1;
+            min-height: 300px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            touch-action: none;
+        }
+        
+        canvas {
+            display: block;
+            background-color: #E9F5DB;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        button {
+            border: none;
+            border-radius: 25px;
+            padding: 12px;
+            font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+            min-height: 50px;
+        }
+        
+        button:active {
+            transform: translateY(3px);
+            box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+        }
+        
+        .read-btn {
+            background-color: #06D6A0;
+            color: white;
+        }
+        
+        .read-btn.listening {
+            background-color: #EF476F;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .manual-btn {
+            background-color: #FFD166;
+            color: #333;
+        }
+        
+        .new-game-btn {
+            background-color: #118AB2;
+            color: white;
+        }
+        
+        .mobile-controls {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .mobile-btn {
+            background-color: #555;
+            color: white;
+            font-size: 1.5rem;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mobile-btn:active {
+            background-color: #777;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: bold;
+            min-height: 25px;
+            text-align: center;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .correct {
+            color: #06D6A0;
+            background-color: rgba(6, 214, 160, 0.1);
+        }
+        
+        .incorrect {
+            color: #EF476F;
+            background-color: rgba(239, 71, 111, 0.1);
+        }
+        
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.98);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            width: 90%;
+            max-width: 400px;
+            border: 3px solid #FFD166;
+        }
+        
+        .message h2 {
+            color: #EF476F;
+            margin-bottom: 10px;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+        }
+        
+        .message p {
+            font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+            margin-bottom: 15px;
+            color: #333;
+            line-height: 1.4;
+        }
+        
+        .close-btn {
+            background-color: #118AB2;
+            color: white;
+            padding: 10px 20px;
+            font-size: clamp(1rem, 2vw, 1.1rem);
+        }
+        
+        /* Input form styling */
+        .input-form {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        
+        .input-form h2 {
+            color: #118AB2;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+            font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #A2D2FF;
+            border-radius: 8px;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #A2D2FF;
+            border-radius: 8px;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .form-btn {
+            flex: 1;
+            padding: 12px;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+        }
+        
+        .start-btn {
+            background-color: #06D6A0;
+            color: white;
+        }
+        
+        .example-btn {
+            background-color: #FFD166;
+            color: #333;
+        }
+        
+        .form-instruction {
+            margin-top: 10px;
+            font-size: clamp(0.8rem, 1.6vw, 1rem);
+            color: #555;
+            text-align: center;
+        }
+        
+        /* Hiển thị mobile controls trên màn hình nhỏ */
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            .reading-panel {
+                order: 1;
+            }
+            
+            .game-canvas-container {
+                order: 2;
+                min-height: 40vh;
+            }
+            
+            .controls {
+                order: 3;
+            }
+            
+            .mobile-controls {
+                display: grid;
+            }
+            
+            .control-instructions {
+                display: none;
+            }
+            
+            body {
+                padding: 5px;
+            }
+            
+            .game-info {
+                padding: 8px;
+            }
+        }
+        
+        /* Hiển thị desktop layout trên màn hình lớn */
+        @media (min-width: 769px) {
+            .game-area {
+                flex-direction: row;
+                height: 60vh;
+            }
+            
+            .reading-panel {
+                width: 40%;
+            }
+            
+            .game-canvas-container {
+                width: 60%;
+            }
+            
+            .mobile-controls {
+                display: none;
+            }
+        }
+        
+        /* Tối ưu cho màn hình rất nhỏ */
+        @media (max-width: 480px) {
+            .game-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .mode-selector {
+                flex-direction: column;
+            }
+            
+            .word-display {
+                min-height: 70px;
+                padding: 10px;
+            }
+            
+            .current-word {
+                font-size: clamp(1.5rem, 3vw, 2rem);
+            }
+            
+            button {
+                padding: 10px;
+                min-height: 45px;
+            }
+        }
+        
+        /* Tối ưu cho tablet */
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .game-area {
+                height: 65vh;
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes shootHint {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Tối ưu cho iOS */
+        @supports (-webkit-touch-callout: none) {
+            button, .mobile-btn {
+                -webkit-appearance: none;
+            }
+            
+            canvas {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+        
+        /* Ngăn chặn zoom trên mobile */
+        @media (hover: none) and (pointer: coarse) {
+            body {
+                touch-action: pan-x pan-y;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Game Bắn Bóng Luyện Đọc 🎈</h1>
+            <p class="subtitle">(Súng xoay theo chuột/chạm, không giới hạn thời gian)</p>
+        </header>
+        
+        <!-- Form để nhập từ -->
+        <div class="input-form" id="input-form">
+            <h2>Nhập danh sách từ của bạn</h2>
+            <div class="form-group">
+                <label class="form-label" for="words-input">Nhập các từ (mỗi từ trên một dòng, định dạng: từ - câu ví dụ)</label>
+                <textarea class="form-textarea" id="words-input" placeholder="Ví dụ:
+anh - nhánh cây anh đào
+ach - quyển sách
+chanh - quả chanh
+sách - cuốn sách, tủ sách, đọc sách"></textarea>
+            </div>
+            <div class="form-buttons">
+                <button class="form-btn example-btn" id="load-example-btn">📋 Dùng ví dụ mẫu</button>
+                <button class="form-btn start-btn" id="start-game-btn">🚀 Bắt đầu chơi</button>
+            </div>
+            <p class="form-instruction">💡 <strong>Hướng dẫn:</strong> Mỗi dòng là một từ. Định dạng: "từ - câu ví dụ" hoặc chỉ cần "từ".</p>
+        </div>
+        
+        <div class="game-info" style="display: none;" id="game-info">
+            <div class="info-box">
+                <div class="info-label">Lượt chơi</div>
+                <div class="info-value" id="round">1</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Số lần bắn</div>
+                <div class="info-value shots-left" id="shots">0/10</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Điểm số</div>
+                <div class="info-value" id="score">0</div>
+            </div>
+        </div>
+        
+        <div class="game-area" style="display: none;" id="game-area">
+            <div class="reading-panel">
+                <div class="word-display">
+                    <div class="current-word" id="current-word">Xin chào</div>
+                </div>
+                
+                <div class="sentence-display" id="sentence-display">
+                    Em hãy đọc từ "Xin chào" thật to và rõ ràng.
+                </div>
+                
+                <div class="mode-selector">
+                    <button class="mode-btn active" id="voice-mode-btn">🎤 Giọng nói</button>
+                    <button class="mode-btn" id="manual-mode-btn">👆 Thủ công</button>
+                </div>
+                
+                <div class="listening-indicator" id="listening-indicator">
+                    <span class="mic-icon">🎤</span> Đang nghe... Hãy đọc to từ trên màn hình!
+                </div>
+                
+                <div class="manual-control" id="manual-control">
+                    <button class="manual-btn" id="manual-correct-btn">Tôi đã đọc đúng từ này</button>
+                </div>
+                
+                <div class="ball-counter" id="ball-counter">
+                    🎯 Bóng còn lại: <span id="balls-left">10</span>/10
+                </div>
+                
+                <div class="control-instructions">
+                    <p>Điều khiển súng: 
+                        <span class="control-key">←</span> Sang trái | 
+                        <span class="control-key">→</span> Sang phải
+                    </p>
+                    <p>Di chuột để xoay hướng súng</p>
+                    <p>Bắn: <span class="control-key">NHẤP ĐÚP</span></p>
+                </div>
+                
+                <div class="shoot-instruction" id="shoot-instruction">
+                    🎯 Sau khi đọc đúng, NHẤP ĐÚP để bắn!
+                </div>
+            </div>
+            
+            <div class="game-canvas-container">
+                <canvas id="gameCanvas"></canvas>
+            </div>
+        </div>
+        
+        <!-- Mobile controls (chỉ hiển thị trên mobile) -->
+        <div class="mobile-controls" id="mobile-controls" style="display: none;">
+            <button class="mobile-btn" id="mobile-left">←</button>
+            <button class="mobile-btn" id="mobile-right">→</button>
+            <button class="mobile-btn" id="mobile-shoot" style="grid-column: span 2;">🔫 BẮN</button>
+        </div>
+        
+        <div class="controls" style="display: none;" id="controls">
+            <div class="feedback" id="feedback"></div>
+            
+            <button class="read-btn" id="read-btn">🎤 Bắt đầu đọc từ này</button>
+            <button class="new-game-btn" id="new-game-btn">🔄 Chơi lại với từ mới</button>
+        </div>
+    </div>
+    
+    <div class="message" id="message">
+        <h2 id="message-title">Chúc mừng!</h2>
+        <p id="message-text">Bạn đã hoàn thành lượt chơi!</p>
+        <button class="close-btn" id="close-btn">Tiếp tục</button>
+    </div>
+
+    <script>
+        // Khởi tạo các biến game
+        let shots = 0;
+        let maxShots = 10;
+        let score = 0;
+        let round = 1;
+        let canShoot = false;
+        let currentWordIndex = 0;
+        let isListening = false;
+        let lastClickTime = 0;
+        const DOUBLE_CLICK_DELAY = 300; // ms
+        
+        // Kiểm tra thiết bị di động
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isAndroid = /Android/.test(navigator.userAgent);
+        
+        // Chế độ chơi
+        let gameMode = 'voice'; // 'voice' hoặc 'manual'
+        
+        // Danh sách từ người dùng nhập
+        let wordList = [];
+        
+        // Speech Recognition API
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
+        
+        // Kiểm tra trình duyệt hỗ trợ nhận diện giọng nói không
+        const isSpeechSupported = SpeechRecognition != null;
+        
+        // Lấy các phần tử DOM
+        const inputFormEl = document.getElementById('input-form');
+        const gameInfoEl = document.getElementById('game-info');
+        const gameAreaEl = document.getElementById('game-area');
+        const mobileControlsEl = document.getElementById('mobile-controls');
+        const controlsEl = document.getElementById('controls');
+        const wordsInputEl = document.getElementById('words-input');
+        const loadExampleBtn = document.getElementById('load-example-btn');
+        const startGameBtn = document.getElementById('start-game-btn');
+        const currentWordEl = document.getElementById('current-word');
+        const sentenceDisplayEl = document.getElementById('sentence-display');
+        const shotsEl = document.getElementById('shots');
+        const scoreEl = document.getElementById('score');
+        const roundEl = document.getElementById('round');
+        const readBtn = document.getElementById('read-btn');
+        const newGameBtn = document.getElementById('new-game-btn');
+        const feedbackEl = document.getElementById('feedback');
+        const messageEl = document.getElementById('message');
+        const messageTitleEl = document.getElementById('message-title');
+        const messageTextEl = document.getElementById('message-text');
+        const closeBtn = document.getElementById('close-btn');
+        const listeningIndicator = document.getElementById('listening-indicator');
+        const shootInstruction = document.getElementById('shoot-instruction');
+        const ballCounter = document.getElementById('ball-counter');
+        const ballsLeftEl = document.getElementById('balls-left');
+        const voiceModeBtn = document.getElementById('voice-mode-btn');
+        const manualModeBtn = document.getElementById('manual-mode-btn');
+        const manualControl = document.getElementById('manual-control');
+        const manualCorrectBtn = document.getElementById('manual-correct-btn');
+        
+        // Mobile controls
+        const mobileLeftBtn = document.getElementById('mobile-left');
+        const mobileRightBtn = document.getElementById('mobile-right');
+        const mobileShootBtn = document.getElementById('mobile-shoot');
+        
+        // Khởi tạo canvas
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Vị trí chạm/chuột
+        let mouseX = 0;
+        let mouseY = 0;
+        let isTouching = false;
+        
+        // Điều chỉnh kích thước canvas cho responsive
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const dpr = window.devicePixelRatio || 1;
+            
+            // Lấy kích thước thực tế của container
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            
+            // Scale context để phù hợp với DPI
+            ctx.scale(dpr, dpr);
+            
+            // Đặt kích thước CSS
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            
+            // Cập nhật vị trí súng
+            if (cannon) {
+                cannon.x = rect.width / 2;
+                cannon.y = rect.height - 40;
+            }
+            
+            // Tạo lại bóng nếu cần
+            if (balls && balls.length === 0 && gameActive) {
+                initBalls();
+            }
+            
+            if (gameActive) {
+                drawGame();
+            }
+        }
+        
+        // Các biến cho game bắn bóng
+        const TOTAL_BALLS = 10;
+        let balls = [];
+        let cannon = {
+            x: 0,
+            y: 0,
+            width: 60,
+            height: 40,
+            angle: Math.PI/2, // 90 độ mặc định
+            speed: isMobile ? 8 : 5, // Nhanh hơn trên mobile
+            moveAnimation: 0
+        };
+        let bullets = [];
+        let gameActive = false;
+        
+        // Phím đang được nhấn
+        const keys = {
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+        
+        // Mobile touch states
+        let mobileLeftPressed = false;
+        let mobileRightPressed = false;
+        
+        // Khởi tạo game
+        function initGame() {
+            console.log("Khởi tạo game mới với", wordList.length, "từ...");
+            
+            // Kiểm tra danh sách từ
+            if (wordList.length === 0) {
+                alert("Vui lòng nhập ít nhất một từ để bắt đầu!");
+                return false;
+            }
+            
+            // Reset game state
+            shots = 0;
+            score = 0;
+            canShoot = false;
+            gameActive = true;
+            isListening = false;
+            
+            // Reset balls
+            balls = [];
+            bullets = [];
+            
+            // Khởi tạo súng
+            const rect = canvas.getBoundingClientRect();
+            cannon.x = rect.width / 2;
+            cannon.y = rect.height - 40;
+            cannon.angle = Math.PI/2;
+            cannon.moveAnimation = 0;
+            cannon.speed = isMobile ? 8 : 5;
+            
+            // Tạo bóng
+            initBalls();
+            
+            // Cập nhật UI
+            updateUI();
+            resetFeedback();
+            updateShootInstruction();
+            
+            // Chọn từ ngẫu nhiên
+            selectRandomWord();
+            
+            // Vẽ game lần đầu
+            drawGame();
+            
+            // Bắt đầu game loop
+            requestAnimationFrame(gameLoop);
+            
+            // Khởi tạo Speech Recognition nếu hỗ trợ
+            if (isSpeechSupported && gameMode === 'voice') {
+                initSpeechRecognition();
+                readBtn.disabled = false;
+                readBtn.textContent = "🎤 Bắt đầu đọc từ này";
+                feedbackEl.textContent = "Chế độ giọng nói đã sẵn sàng. Nhấn nút để bắt đầu đọc.";
+            } else if (gameMode === 'manual') {
+                readBtn.disabled = false;
+                readBtn.textContent = "🎤 Bắt đầu đọc từ này";
+                feedbackEl.textContent = "Chế độ thủ công. Đọc to từ và nhấn nút 'Tôi đã đọc đúng' khi hoàn thành.";
+            } else {
+                // Nếu không hỗ trợ giọng nói, tự động chuyển sang chế độ thủ công
+                gameMode = 'manual';
+                updateModeDisplay();
+                readBtn.disabled = false;
+                readBtn.textContent = "🎤 Bắt đầu đọc từ này";
+                feedbackEl.textContent = "Trình duyệt không hỗ trợ nhận diện giọng nói. Đã chuyển sang chế độ thủ công.";
+            }
+            
+            return true;
+        }
+        
+        // Cập nhật hiển thị chế độ
+        function updateModeDisplay() {
+            if (gameMode === 'voice') {
+                voiceModeBtn.classList.add('active');
+                manualModeBtn.classList.remove('active');
+                manualControl.style.display = 'none';
+                listeningIndicator.style.display = 'none';
+            } else {
+                manualModeBtn.classList.add('active');
+                voiceModeBtn.classList.remove('active');
+                manualControl.style.display = 'block';
+                listeningIndicator.style.display = 'none';
+            }
+        }
+        
+        // Khởi tạo bóng
+        function initBalls() {
+            balls = [];
+            
+            // Tạo 10 quả bóng với kích thước và tốc độ khác nhau
+            for (let i = 0; i < TOTAL_BALLS; i++) {
+                createBall();
+            }
+            
+            updateBallCounter();
+        }
+        
+        // Tạo một quả bóng mới
+        function createBall() {
+            const minRadius = 15;
+            const maxRadius = 40;
+            const radius = minRadius + Math.random() * (maxRadius - minRadius);
+            
+            // Lấy kích thước canvas
+            const rect = canvas.getBoundingClientRect();
+            const canvasWidth = rect.width;
+            const canvasHeight = rect.height;
+            
+            // Bóng xuất hiện ở vị trí ngẫu nhiên trên nửa trên màn hình
+            const x = radius + Math.random() * (canvasWidth - radius * 2);
+            const y = radius + Math.random() * (canvasHeight / 2 - radius * 2);
+            
+            // Tốc độ nhanh hơn (từ 2 đến 6)
+            const speed = 2 + Math.random() * 4;
+            const angle = Math.random() * Math.PI * 2;
+            
+            const speedX = Math.cos(angle) * speed;
+            const speedY = Math.sin(angle) * speed;
+            
+            // Màu sắc ngẫu nhiên
+            const color = getRandomColor();
+            
+            // Điểm số dựa trên kích thước (bóng nhỏ được nhiều điểm hơn)
+            const points = Math.round(50 - radius);
+            
+            balls.push({
+                x, y, radius,
+                speedX, speedY,
+                color,
+                points,
+                id: Date.now() + Math.random() // ID duy nhất
+            });
+        }
+        
+        // Cập nhật số bóng còn lại
+        function updateBallCounter() {
+            ballsLeftEl.textContent = balls.length;
+            
+            // Đổi màu theo số bóng còn lại
+            if (balls.length <= 3) {
+                ballCounter.style.backgroundColor = "rgba(239, 71, 111, 0.3)";
+                ballCounter.style.color = "#EF476F";
+            } else if (balls.length <= 6) {
+                ballCounter.style.backgroundColor = "rgba(255, 215, 102, 0.3)";
+                ballCounter.style.color = "#FFD166";
+            } else {
+                ballCounter.style.backgroundColor = "rgba(162, 210, 255, 0.3)";
+                ballCounter.style.color = "#118AB2";
+            }
+        }
+        
+        // Xử lý nhập danh sách từ
+        function parseWordsInput(text) {
+            const lines = text.split('\n');
+            const result = [];
+            
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+                
+                // Kiểm tra định dạng "từ - câu ví dụ"
+                if (line.includes('-')) {
+                    const parts = line.split('-');
+                    const word = parts[0].trim();
+                    const sentence = parts.slice(1).join('-').trim();
+                    
+                    if (word) {
+                        result.push({
+                            word: word,
+                            sentence: sentence || `Hãy đọc từ "${word}"`
+                        });
+                    }
+                } else {
+                    // Chỉ có từ, không có câu ví dụ
+                    result.push({
+                        word: line,
+                        sentence: `Hãy đọc từ "${line}"`
+                    });
+                }
+            }
+            
+            return result;
+        }
+        
+        // Tải ví dụ mẫu
+        function loadExampleWords() {
+            const exampleWords = `anh - nhánh cây anh đào
+ach - quyển sách
+chanh - quả chanh
+sách - cuốn sách, tủ sách, đọc sách
+gạch - viên gạch
+tranh - bức tranh, tranh ảnh, xem tranh
+sạch - sạch sẽ
+khách - khách sạn
+tách - tách trà
+nhanh - nhanh nhẹn, rất nhanh
+thanh - thanh kẹo
+lành - hiền lành
+bánh - bánh chưng, bánh kẹo`;
+            
+            wordsInputEl.value = exampleWords;
+        }
+        
+        // Khởi tạo nhận diện giọng nói
+        function initSpeechRecognition() {
+            if (!isSpeechSupported) return;
+            
+            try {
+                recognition = new SpeechRecognition();
+                recognition.lang = 'vi-VN'; // Tiếng Việt
+                recognition.continuous = false; // Chỉ nhận diện một lần
+                recognition.interimResults = false; // Không hiển thị kết quả tạm thời
+                recognition.maxAlternatives = 1; // Chỉ lấy 1 kết quả tốt nhất
+                
+                // Thêm config cho iOS
+                if (isIOS) {
+                    recognition.continuous = true;
+                    recognition.interimResults = true;
+                }
+                
+                recognition.onstart = function() {
+                    isListening = true;
+                    readBtn.classList.add('listening');
+                    readBtn.textContent = "🎤 Đang nghe... Hãy đọc to!";
+                    listeningIndicator.style.display = 'block';
+                    feedbackEl.textContent = "Đang nghe... Hãy đọc to và rõ ràng!";
+                    feedbackEl.className = "feedback";
+                };
+                
+                recognition.onresult = function(event) {
+                    let transcript = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            transcript += event.results[i][0].transcript;
+                        }
+                    }
+                    
+                    transcript = transcript.toLowerCase().trim();
+                    const currentWord = wordList[currentWordIndex].word.toLowerCase();
+                    
+                    if (!transcript) return;
+                    
+                    console.log("Nhận diện được: " + transcript);
+                    console.log("Từ cần đọc: " + currentWord);
+                    
+                    // Kiểm tra xem có đọc đúng không
+                    let isCorrect = false;
+                    
+                    // So sánh trực tiếp
+                    if (transcript === currentWord) {
+                        isCorrect = true;
+                    }
+                    // Kiểm tra xem từ cần đọc có trong câu nói không (cho phép nói thêm từ)
+                    else if (transcript.includes(currentWord)) {
+                        isCorrect = true;
+                    }
+                    // Kiểm tra độ tương đồng (cho phép sai lệch nhỏ)
+                    else if (calculateSimilarity(transcript, currentWord) > 0.7) {
+                        isCorrect = true;
+                    }
+                    
+                    if (isCorrect) {
+                        // Dừng nhận diện trên iOS
+                        if (isIOS) {
+                            recognition.stop();
+                        }
+                        handleReadingResult(isCorrect, transcript);
+                    }
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Lỗi nhận diện giọng nói:', event.error);
+                    isListening = false;
+                    readBtn.classList.remove('listening');
+                    readBtn.textContent = "🎤 Bắt đầu đọc từ này";
+                    listeningIndicator.style.display = 'none';
+                    
+                    if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+                        feedbackEl.textContent = "Microphone bị từ chối. Vui lòng cho phép sử dụng microphone hoặc chuyển sang chế độ thủ công.";
+                        feedbackEl.className = "feedback incorrect";
+                        
+                        // Tự động chuyển sang chế độ thủ công sau 3 giây
+                        setTimeout(() => {
+                            gameMode = 'manual';
+                            updateModeDisplay();
+                            feedbackEl.textContent = "Đã chuyển sang chế độ thủ công. Đọc to từ và nhấn nút 'Tôi đã đọc đúng'.";
+                        }, 3000);
+                    } else {
+                        feedbackEl.textContent = "Lỗi nhận diện giọng nói. Vui lòng thử lại hoặc chuyển sang chế độ thủ công.";
+                        feedbackEl.className = "feedback incorrect";
+                    }
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    readBtn.classList.remove('listening');
+                    readBtn.textContent = "🎤 Bắt đầu đọc từ này";
+                    listeningIndicator.style.display = 'none';
+                };
+                
+                console.log("Speech Recognition đã được khởi tạo");
+            } catch (error) {
+                console.error("Lỗi khi khởi tạo Speech Recognition:", error);
+                feedbackEl.textContent = "Không thể khởi tạo nhận diện giọng nói. Vui lòng chuyển sang chế độ thủ công.";
+                feedbackEl.className = "feedback incorrect";
+                gameMode = 'manual';
+                updateModeDisplay();
+            }
+        }
+        
+        // Xử lý kết quả đọc
+        function handleReadingResult(isCorrect, transcript = '') {
+            if (isCorrect) {
+                feedbackEl.textContent = "Chính xác! Bạn đã đọc đúng từ '" + wordList[currentWordIndex].word + "'. Bạn có thể NHẤP ĐÚP để bắn!";
+                feedbackEl.className = "feedback correct";
+                canShoot = true;
+                updateShootInstruction();
+                
+                // Hiệu ứng nhấp nháy hướng dẫn bắn
+                shootInstruction.style.animation = "shootHint 1s 3";
+                
+                // Tự động reset sau 3 giây
+                setTimeout(() => {
+                    if (canShoot && shots < maxShots) {
+                        feedbackEl.textContent = "NHẤP ĐÚP vào màn hình game để bắn!";
+                        feedbackEl.className = "feedback";
+                    }
+                }, 3000);
+            } else {
+                const errorMsg = transcript ? 
+                    `Chưa đúng! Bạn nói: '${transcript}'. Cần đọc: '${wordList[currentWordIndex].word}'. Hãy thử lại!` :
+                    `Chưa đúng! Cần đọc: '${wordList[currentWordIndex].word}'. Hãy thử lại!`;
+                
+                feedbackEl.textContent = errorMsg;
+                feedbackEl.className = "feedback incorrect";
+                canShoot = false;
+                updateShootInstruction();
+                
+                // Tự động bắt đầu lại sau 2 giây (chỉ khi ở chế độ voice)
+                if (gameMode === 'voice') {
+                    setTimeout(() => {
+                        startListening();
+                    }, 2000);
+                }
+            }
+        }
+        
+        // Tính độ tương đồng giữa hai chuỗi
+        function calculateSimilarity(str1, str2) {
+            let matches = 0;
+            const minLength = Math.min(str1.length, str2.length);
+            const maxLength = Math.max(str1.length, str2.length);
+            
+            for (let i = 0; i < minLength; i++) {
+                if (str1[i] === str2[i]) {
+                    matches++;
+                }
+            }
+            
+            return matches / maxLength;
+        }
+        
+        // Cập nhật hướng dẫn bắn
+        function updateShootInstruction() {
+            if (canShoot && shots < maxShots) {
+                shootInstruction.style.display = 'block';
+                shootInstruction.innerHTML = "🎯 Bạn có thể bắn! <strong>NHẤP ĐÚP</strong> để bắn!";
+                shootInstruction.style.backgroundColor = "rgba(6, 214, 160, 0.3)";
+                
+                // Kích hoạt nút bắn trên mobile
+                mobileShootBtn.disabled = false;
+                mobileShootBtn.style.opacity = "1";
+            } else if (shots >= maxShots) {
+                shootInstruction.innerHTML = "🎯 Đã hết lượt bắn! Nhấn nút 'Chơi lại với từ mới' để bắt đầu lượt mới.";
+                shootInstruction.style.backgroundColor = "rgba(239, 71, 111, 0.3)";
+                
+                // Vô hiệu hóa nút bắn trên mobile
+                mobileShootBtn.disabled = true;
+                mobileShootBtn.style.opacity = "0.5";
+            } else {
+                shootInstruction.innerHTML = "🎯 Đọc đúng từ để có thể bắn (NHẤP ĐÚP)";
+                shootInstruction.style.backgroundColor = "rgba(255, 215, 102, 0.3)";
+                
+                // Vô hiệu hóa nút bắn trên mobile
+                mobileShootBtn.disabled = true;
+                mobileShootBtn.style.opacity = "0.5";
+            }
+        }
+        
+        // Bắt đầu nghe (chế độ giọng nói)
+        function startListening() {
+            if (gameMode !== 'voice' || !isSpeechSupported || isListening) return;
+            
+            try {
+                if (recognition) {
+                    recognition.start();
+                } else {
+                    // Nếu chưa có recognition, khởi tạo lại
+                    initSpeechRecognition();
+                    if (recognition) {
+                        recognition.start();
+                    }
+                }
+            } catch (error) {
+                console.error('Lỗi khi bắt đầu nhận diện:', error);
+                feedbackEl.textContent = "Không thể bắt đầu nhận diện giọng nói. Vui lòng thử lại hoặc chuyển sang chế độ thủ công.";
+                feedbackEl.className = "feedback incorrect";
+                
+                // Tự động chuyển sang chế độ thủ công sau 2 giây
+                setTimeout(() => {
+                    gameMode = 'manual';
+                    updateModeDisplay();
+                    feedbackEl.textContent = "Đã chuyển sang chế độ thủ công. Đọc to từ và nhấn nút 'Tôi đã đọc đúng'.";
+                }, 2000);
+            }
+        }
+        
+        // Bắt đầu đọc (chế độ thủ công)
+        function startManualReading() {
+            feedbackEl.textContent = "Hãy đọc to từ '" + wordList[currentWordIndex].word + "' và nhấn nút 'Tôi đã đọc đúng' khi hoàn thành.";
+            feedbackEl.className = "feedback";
+        }
+        
+        // Chọn từ ngẫu nhiên
+        function selectRandomWord() {
+            currentWordIndex = Math.floor(Math.random() * wordList.length);
+            currentWordEl.textContent = wordList[currentWordIndex].word;
+            sentenceDisplayEl.textContent = wordList[currentWordIndex].sentence;
+        }
+        
+        // Cập nhật UI
+        function updateUI() {
+            shotsEl.textContent = `${shots}/${maxShots}`;
+            scoreEl.textContent = score;
+            roundEl.textContent = round;
+        }
+        
+        // Reset phản hồi
+        function resetFeedback() {
+            feedbackEl.textContent = gameMode === 'voice' 
+                ? "Nhấn nút 'Bắt đầu đọc từ này' và đọc to từ trên màn hình" 
+                : "Nhấn nút 'Bắt đầu đọc từ này', đọc to từ rồi nhấn 'Tôi đã đọc đúng'";
+            feedbackEl.className = "feedback";
+        }
+        
+        // Lấy màu ngẫu nhiên
+        function getRandomColor() {
+            const colors = ['#FF6B6B', '#06D6A0', '#118AB2', '#FFD166', '#EF476F', '#A2D2FF', '#9D4EDD', '#FF9E00', '#2EC4B6', '#E71D36'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
+        // Vẽ game
+        function drawGame() {
+            // Xóa canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Vẽ nền
+            drawBackground();
+            
+            // Vẽ bóng
+            balls.forEach(ball => {
+                drawBall(ball);
+            });
+            
+            // Vẽ đạn
+            bullets.forEach(bullet => {
+                drawBullet(bullet);
+            });
+            
+            // Vẽ đại bác
+            drawCannon();
+            
+            // Vẽ thông tin trong game
+            drawGameInfo();
+        }
+        
+        // Vẽ nền
+        function drawBackground() {
+            // Lấy kích thước canvas (đã scale)
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+            
+            // Nền trời
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, '#87CEEB');
+            gradient.addColorStop(0.7, '#98FB98');
+            gradient.addColorStop(1, '#E9F5DB');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+            // Mặt trời
+            ctx.beginPath();
+            ctx.arc(width - 40, 40, 25, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFD166';
+            ctx.fill();
+            
+            // Mây
+            drawCloud(80, 60, 25);
+            drawCloud(200, 90, 30);
+            drawCloud(320, 50, 28);
+            
+            // Mặt đất (nơi súng di chuyển)
+            ctx.fillStyle = 'rgba(139, 69, 19, 0.7)';
+            ctx.fillRect(0, height - 40, width, 40);
+            
+            // Vẽ đường ray cho súng di chuyển
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, height - 20);
+            ctx.lineTo(width, height - 20);
+            ctx.stroke();
+            
+            // Vẽ thanh ray
+            ctx.fillStyle = '#777';
+            for (let i = 0; i < width; i += 25) {
+                ctx.fillRect(i, height - 25, 12, 8);
+            }
+        }
+        
+        // Vẽ mây
+        function drawCloud(x, y, size) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.beginPath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.arc(x + size * 0.8, y - size * 0.3, size * 0.7, 0, Math.PI * 2);
+            ctx.arc(x + size * 0.8, y + size * 0.3, size * 0.7, 0, Math.PI * 2);
+            ctx.arc(x + size * 1.6, y, size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Vẽ đại bác
+        function drawCannon() {
+            // Lấy kích thước canvas
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+            
+            // Cập nhật góc súng theo vị trí chuột/chạm
+            const dx = mouseX - cannon.x;
+            const dy = mouseY - cannon.y;
+            cannon.angle = Math.atan2(dy, dx);
+            
+            // Giới hạn góc xoay (không cho súng xoay xuống dưới)
+            const minAngle = -Math.PI / 2; // -90 độ
+            const maxAngle = -Math.PI / 6; // -30 độ
+            cannon.angle = Math.max(minAngle, Math.min(maxAngle, cannon.angle));
+            
+            // Hiệu ứng di chuyển nhẹ
+            cannon.moveAnimation += 0.05;
+            const bounce = Math.sin(cannon.moveAnimation) * 2;
+            
+            // Vẽ thân đại bác
+            ctx.save();
+            ctx.translate(cannon.x, cannon.y + bounce);
+            ctx.rotate(cannon.angle);
+            
+            // Thân súng
+            ctx.fillStyle = '#555';
+            ctx.fillRect(-cannon.width/2, -cannon.height/2, cannon.width, cannon.height);
+            
+            // Nòng súng
+            ctx.fillStyle = '#333';
+            ctx.fillRect(0, -6, 50, 12);
+            
+            // Bánh xe
+            ctx.fillStyle = '#777';
+            ctx.beginPath();
+            ctx.arc(-15, 12, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(15, 12, 10, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.restore();
+            
+            // Vẽ đèn trên súng
+            ctx.fillStyle = '#FFD166';
+            ctx.beginPath();
+            ctx.arc(cannon.x - 12, cannon.y + bounce - 8, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#EF476F';
+            ctx.beginPath();
+            ctx.arc(cannon.x + 12, cannon.y + bounce - 8, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        
+        // Vẽ bóng
+        function drawBall(ball) {
+            // Vẽ bóng với hiệu ứng 3D
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            
+            // Gradient cho hiệu ứng 3D
+            const gradient = ctx.createRadialGradient(
+                ball.x - ball.radius/3, ball.y - ball.radius/3, 1,
+                ball.x, ball.y, ball.radius
+            );
+            gradient.addColorStop(0, 'rgba(255, 255, 255, 0.8)');
+            gradient.addColorStop(0.3, ball.color);
+            gradient.addColorStop(1, darkenColor(ball.color, 0.3));
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Viền bóng
+            ctx.strokeStyle = darkenColor(ball.color, 0.4);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Vẽ điểm số trên bóng (bóng nhỏ không vẽ)
+            if (ball.radius > 15) {
+                ctx.fillStyle = '#FFF';
+                ctx.font = `bold ${Math.max(10, ball.radius/2)}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(ball.points, ball.x, ball.y);
+            }
+        }
+        
+        // Làm tối màu
+        function darkenColor(color, amount) {
+            // Xử lý màu hex
+            let r = parseInt(color.substring(1, 3), 16);
+            let g = parseInt(color.substring(3, 5), 16);
+            let b = parseInt(color.substring(5, 7), 16);
+            
+            r = Math.max(0, Math.floor(r * (1 - amount)));
+            g = Math.max(0, Math.floor(g * (1 - amount)));
+            b = Math.max(0, Math.floor(b * (1 - amount)));
+            
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+        
+        // Vẽ đạn
+        function drawBullet(bullet) {
+            ctx.beginPath();
+            ctx.arc(bullet.x, bullet.y, 5, 0, Math.PI * 2);
+            
+            // Gradient cho đạn
+            const gradient = ctx.createRadialGradient(
+                bullet.x - 2, bullet.y - 2, 1,
+                bullet.x, bullet.y, 5
+            );
+            gradient.addColorStop(0, '#FFF');
+            gradient.addColorStop(0.5, '#FF6B6B');
+            gradient.addColorStop(1, '#333');
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Vẽ đuôi đạn
+            ctx.beginPath();
+            ctx.moveTo(bullet.x - Math.cos(bullet.angle) * 10, bullet.y - Math.sin(bullet.angle) * 10);
+            ctx.lineTo(bullet.x, bullet.y);
+            ctx.strokeStyle = '#FF6B6B';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+        
+        // Vẽ thông tin game trên canvas
+        function drawGameInfo() {
+            // Lấy kích thước canvas
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width;
+            
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(`Điểm: ${score}`, 10, 20);
+            ctx.fillText(`Lần bắn: ${shots}/${maxShots}`, 10, 40);
+            ctx.fillText(`Bóng: ${balls.length}`, 10, 60);
+            
+            // Trạng thái bắn
+            if (canShoot && shots < maxShots) {
+                ctx.fillStyle = 'rgba(6, 214, 160, 0.9)';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`SẴN SÀNG BẮN!`, width / 2, 25);
+            } else if (!canShoot && shots < maxShots) {
+                ctx.fillStyle = 'rgba(239, 71, 111, 0.9)';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(`ĐỌC ĐÚNG TỪ ĐỂ BẮN`, width / 2, 25);
+            }
+        }
+        
+        // Xử lý nhấp đúp để bắn (cho cả desktop và mobile)
+        function handleShoot() {
+            if (!canShoot || shots >= maxShots || !gameActive) return;
+            
+            shoot();
+        }
+        
+        // Thực hiện bắn
+        function shoot() {
+            // Tăng số lần bắn
+            shots++;
+            
+            // Tạo đạn với góc bắn hiện tại của súng
+            const bulletSpeed = 12;
+            const bullet = {
+                x: cannon.x + Math.cos(cannon.angle) * 30,
+                y: cannon.y + Math.sin(cannon.angle) * 30,
+                speedX: Math.cos(cannon.angle) * bulletSpeed,
+                speedY: Math.sin(cannon.angle) * bulletSpeed,
+                angle: cannon.angle
+            };
+            
+            bullets.push(bullet);
+            
+            // Không cho bắn tiếp cho đến khi đọc từ mới đúng
+            canShoot = false;
+            
+            // Chọn từ mới
+            selectRandomWord();
+            
+            // Cập nhật UI
+            updateUI();
+            updateShootInstruction();
+            resetFeedback();
+            
+            // Hiệu ứng âm thanh bắn
+            playShootSound();
+            
+            // Hiệu ứng chớp sáng
+            showMuzzleFlash(cannon.angle);
+            
+            // Kiểm tra kết thúc lượt chơi
+            if (shots >= maxShots) {
+                setTimeout(() => {
+                    endRound();
+                }, 1000);
+            }
+        }
+        
+        // Hiệu ứng chớp sáng khi bắn
+        function showMuzzleFlash(angle) {
+            // Vẽ chớp sáng ở đầu nòng súng
+            const flashX = cannon.x + Math.cos(angle) * 30;
+            const flashY = cannon.y + Math.sin(angle) * 30;
+            
+            // Hiệu ứng chớp sáng
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(flashX, flashY, 15, 0, Math.PI * 2);
+            const gradient = ctx.createRadialGradient(flashX, flashY, 0, flashX, flashY, 15);
+            gradient.addColorStop(0, 'rgba(255, 255, 200, 0.9)');
+            gradient.addColorStop(0.5, 'rgba(255, 200, 100, 0.5)');
+            gradient.addColorStop(1, 'rgba(255, 150, 50, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.restore();
+        }
+        
+        // Game loop
+        function gameLoop() {
+            if (!gameActive) return;
+            
+            // Di chuyển súng theo phím hoặc mobile controls
+            if (keys.ArrowLeft || mobileLeftPressed) {
+                cannon.x -= cannon.speed;
+            }
+            if (keys.ArrowRight || mobileRightPressed) {
+                cannon.x += cannon.speed;
+            }
+            
+            // Giới hạn súng trong màn hình
+            const rect = canvas.getBoundingClientRect();
+            cannon.x = Math.max(cannon.width/2 + 10, Math.min(rect.width - cannon.width/2 - 10, cannon.x));
+            
+            // Cập nhật vị trí bóng
+            balls.forEach(ball => {
+                ball.x += ball.speedX;
+                ball.y += ball.speedY;
+                
+                // Kiểm tra va chạm với tường - bật nảy
+                if (ball.x - ball.radius < 0 || ball.x + ball.radius > rect.width) {
+                    ball.speedX *= -1;
+                    // Đảm bảo bóng không ra khỏi màn hình
+                    ball.x = Math.max(ball.radius, Math.min(rect.width - ball.radius, ball.x));
+                }
+                if (ball.y - ball.radius < 0 || ball.y + ball.radius > rect.height - 80) {
+                    ball.speedY *= -1;
+                    // Đảm bảo bóng không ra khỏi màn hình
+                    ball.y = Math.max(ball.radius, Math.min(rect.height - 80 - ball.radius, ball.y));
+                }
+            });
+            
+            // Cập nhật vị trí đạn
+            bullets.forEach((bullet, index) => {
+                bullet.x += bullet.speedX;
+                bullet.y += bullet.speedY;
+                
+                // Kiểm tra đạn ra khỏi màn hình
+                if (bullet.x < 0 || bullet.x > rect.width || bullet.y < 0 || bullet.y > rect.height) {
+                    bullets.splice(index, 1);
+                    return;
+                }
+                
+                // Kiểm tra va chạm với bóng
+                balls.forEach((ball, ballIndex) => {
+                    const dx = bullet.x - ball.x;
+                    const dy = bullet.y - ball.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < ball.radius + 5) {
+                        // Trúng bóng!
+                        bullets.splice(index, 1);
+                        
+                        // Cộng điểm theo kích thước bóng
+                        score += ball.points;
+                        
+                        // Hiệu ứng nổ
+                        createExplosion(ball.x, ball.y, ball.color);
+                        
+                        // Xóa bóng
+                        balls.splice(ballIndex, 1);
+                        
+                        // Cập nhật UI
+                        updateUI();
+                        updateBallCounter();
+                        
+                        // Nếu hết bóng, tạo lại bóng mới
+                        if (balls.length === 0) {
+                            initBalls();
+                        }
+                    }
+                });
+            });
+            
+            // Vẽ game
+            drawGame();
+            
+            // Tiếp tục game loop
+            requestAnimationFrame(gameLoop);
+        }
+        
+        // Tạo hiệu ứng nổ
+        function createExplosion(x, y, color) {
+            // Hiệu ứng nổ với nhiều hạt
+            for (let i = 0; i < 10; i++) {
+                const angle = (Math.PI * 2 * i) / 10;
+                const speed = 2 + Math.random() * 3;
+                
+                setTimeout(() => {
+                    const particle = {
+                        x: x,
+                        y: y,
+                        speedX: Math.cos(angle) * speed,
+                        speedY: Math.sin(angle) * speed,
+                        life: 12 + Math.random() * 8,
+                        color: color,
+                        size: 2 + Math.random() * 3
+                    };
+                    
+                    // Vẽ các hạt nổ
+                    const drawParticle = () => {
+                        if (particle.life <= 0) return;
+                        
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        ctx.fillStyle = particle.color;
+                        ctx.fill();
+                        
+                        particle.x += particle.speedX;
+                        particle.y += particle.speedY;
+                        particle.speedX *= 0.95;
+                        particle.speedY *= 0.95;
+                        particle.life--;
+                        
+                        if (particle.life > 0) {
+                            requestAnimationFrame(drawParticle);
+                        }
+                    };
+                    
+                    drawParticle();
+                }, i * 15);
+            }
+        }
+        
+        // Xử lý sự kiện phím (cho desktop)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                keys[e.key] = true;
+                e.preventDefault();
+            }
+        });
+        
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                keys[e.key] = false;
+                e.preventDefault();
+            }
+        });
+        
+        // Xử lý di chuyển chuột để xoay súng (cho desktop)
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+        });
+        
+        // Xử lý chạm để xoay súng (cho mobile)
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (e.touches.length > 0) {
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                mouseX = touch.clientX - rect.left;
+                mouseY = touch.clientY - rect.top;
+                isTouching = true;
+            }
+        }, { passive: false });
+        
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            if (e.touches.length > 0) {
+                const rect = canvas.getBoundingClientRect();
+                const touch = e.touches[0];
+                mouseX = touch.clientX - rect.left;
+                mouseY = touch.clientY - rect.top;
+                isTouching = true;
+            }
+        }, { passive: false });
+        
+        canvas.addEventListener('touchend', (e) => {
+            isTouching = false;
+        });
+        
+        // Xử lý click để bắn (cho desktop)
+        canvas.addEventListener('click', (e) => {
+            if (isMobile) return; // Trên mobile dùng nút bắn riêng
+            
+            const currentTime = new Date().getTime();
+            const timeSinceLastClick = currentTime - lastClickTime;
+            
+            if (timeSinceLastClick < DOUBLE_CLICK_DELAY) {
+                // Đây là nhấp đúp - thực hiện bắn
+                handleShoot();
+                lastClickTime = 0;
+            } else {
+                lastClickTime = currentTime;
+            }
+        });
+        
+        // Xử lý mobile controls
+        mobileLeftBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            mobileLeftPressed = true;
+        });
+        
+        mobileLeftBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            mobileLeftPressed = false;
+        });
+        
+        mobileLeftBtn.addEventListener('mousedown', () => {
+            mobileLeftPressed = true;
+        });
+        
+        mobileLeftBtn.addEventListener('mouseup', () => {
+            mobileLeftPressed = false;
+        });
+        
+        mobileRightBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            mobileRightPressed = true;
+        });
+        
+        mobileRightBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            mobileRightPressed = false;
+        });
+        
+        mobileRightBtn.addEventListener('mousedown', () => {
+            mobileRightPressed = true;
+        });
+        
+        mobileRightBtn.addEventListener('mouseup', () => {
+            mobileRightPressed = false;
+        });
+        
+        mobileShootBtn.addEventListener('click', handleShoot);
+        mobileShootBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleShoot();
+        });
+        
+        // Xử lý nút đọc từ
+        readBtn.addEventListener('click', () => {
+            if (gameMode === 'voice') {
+                if (isListening) {
+                    // Nếu đang nghe thì dừng lại
+                    if (recognition) {
+                        recognition.stop();
+                    }
+                    isListening = false;
+                    readBtn.classList.remove('listening');
+                    readBtn.textContent = "🎤 Bắt đầu đọc từ này";
+                    listeningIndicator.style.display = 'none';
+                } else {
+                    // Bắt đầu nhận diện giọng nói
+                    startListening();
+                }
+            } else {
+                // Chế độ thủ công
+                startManualReading();
+            }
+        });
+        
+        // Xử lý nút "Tôi đã đọc đúng" (chế độ thủ công)
+        manualCorrectBtn.addEventListener('click', () => {
+            if (gameMode === 'manual') {
+                // Xử lý như đã đọc đúng
+                handleReadingResult(true);
+            }
+        });
+        
+        // Xử lý chuyển chế độ
+        voiceModeBtn.addEventListener('click', () => {
+            if (gameMode !== 'voice') {
+                gameMode = 'voice';
+                updateModeDisplay();
+                resetFeedback();
+                
+                // Nếu đang ở chế độ manual và đang đếm thời gian, dừng lại
+                if (isListening && recognition) {
+                    recognition.stop();
+                }
+            }
+        });
+        
+        manualModeBtn.addEventListener('click', () => {
+            if (gameMode !== 'manual') {
+                gameMode = 'manual';
+                updateModeDisplay();
+                resetFeedback();
+                
+                // Nếu đang ở chế độ voice và đang nghe, dừng lại
+                if (isListening && recognition) {
+                    recognition.stop();
+                }
+            }
+        });
+        
+        // Kết thúc lượt chơi
+        function endRound() {
+            gameActive = false;
+            messageTitleEl.textContent = "Hoàn thành lượt chơi!";
+            messageTextEl.textContent = `Bạn đã bắn ${shots} lần, hạ được ${10 - balls.length} quả bóng và đạt được ${score} điểm.`;
+            messageEl.style.display = 'block';
+        }
+        
+        // Chơi lại với từ mới
+        newGameBtn.addEventListener('click', function() {
+            round++;
+            showInputForm();
+        });
+        
+        // Đóng thông báo
+        closeBtn.addEventListener('click', () => {
+            messageEl.style.display = 'none';
+        });
+        
+        // Hiệu ứng âm thanh giả lập
+        function playShootSound() {
+            // Tạo âm thanh bắn đơn giản
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.2);
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (e) {
+                console.log("Không thể phát âm thanh: ", e);
+            }
+        }
+        
+        // Hiển thị form nhập từ
+        function showInputForm() {
+            inputFormEl.style.display = 'block';
+            gameInfoEl.style.display = 'none';
+            gameAreaEl.style.display = 'none';
+            mobileControlsEl.style.display = 'none';
+            controlsEl.style.display = 'none';
+            gameActive = false;
+        }
+        
+        // Hiển thị game
+        function showGame() {
+            inputFormEl.style.display = 'none';
+            gameInfoEl.style.display = 'flex';
+            gameAreaEl.style.display = 'flex';
+            controlsEl.style.display = 'flex';
+            
+            if (isMobile) {
+                mobileControlsEl.style.display = 'grid';
+            }
+        }
+        
+        // Bắt đầu game với từ đã nhập
+        function startGame() {
+            const inputText = wordsInputEl.value.trim();
+            if (!inputText) {
+                alert("Vui lòng nhập danh sách từ!");
+                return;
+            }
+            
+            // Parse danh sách từ
+            wordList = parseWordsInput(inputText);
+            
+            if (wordList.length === 0) {
+                alert("Không tìm thấy từ nào hợp lệ. Vui lòng kiểm tra lại định dạng!");
+                return;
+            }
+            
+            console.log("Đã nhập", wordList.length, "từ:", wordList);
+            
+            // Hiển thị game
+            showGame();
+            
+            // Resize canvas và khởi tạo game
+            resizeCanvas();
+            if (initGame()) {
+                round = 1;
+                updateUI();
+            } else {
+                showInputForm();
+            }
+        }
+        
+        // Xử lý nút tải ví dụ mẫu
+        loadExampleBtn.addEventListener('click', loadExampleWords);
+        
+        // Xử lý nút bắt đầu game
+        startGameBtn.addEventListener('click', startGame);
+        
+        // Khởi động game khi trang tải xong
+        window.addEventListener('load', () => {
+            console.log("Trang đã tải xong, sẵn sàng nhập từ...");
+            console.log("Thiết bị di động:", isMobile);
+            console.log("iOS:", isIOS);
+            console.log("Android:", isAndroid);
+            
+            // Tải ví dụ mẫu khi trang tải xong
+            loadExampleWords();
+            
+            // Xử lý thay đổi kích thước cửa sổ
+            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(resizeCanvas, 100);
+            });
+        });
+        
+        // Ngăn chặn hành vi mặc định trên mobile
+        document.addEventListener('touchmove', (e) => {
+            if (e.target === canvas || e.target === mobileLeftBtn || e.target === mobileRightBtn || e.target === mobileShootBtn) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+        
+        // Ngăn menu context trên mobile
+        document.addEventListener('contextmenu', (e) => {
+            if (isMobile) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
